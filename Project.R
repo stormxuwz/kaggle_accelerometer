@@ -18,6 +18,7 @@ getDevice=function(dataset,num=0){
     num=sample(no.range,1)
   }
   tmp=dataset[dataset[,5]==num,1:5]
+	tmp=timechange(tmp)
   #print(nrow(tmp))
   return(tmp)
 }
@@ -49,6 +50,27 @@ plotdevice=function(dataset,plt=F){
 	}
 	return(a)
 }
+
+plotdevice2=function(dataset,plt=F,mid=0.5){
+	datanum=nrow(dataset)
+	
+	dataplt=dataset[(mid*datanum-250):(mid*datanum+250),]
+	a0=ggplot(data=dataplt)
+  a=a0+geom_point(aes(time,X),colour="green4")+ylab("X")
+	b=a0+geom_point(aes(time,Y),colour="red")+ylab("Y")
+	c=a0+geom_point(aes(time,Z),colour="blue")+ylab("Z")
+	
+  c=c+xlab(paste(as.character(range(dataplt$time)[1]),"To",as.character(range(dataplt$time)[2])))
+ 
+ 	grid.arrange(a,b,c,nrow=3)
+ 
+	if(plt==T){
+		png(paste(dataset[,5],".png",sep=""),width=2000,height=1000,res=130)
+		arrange.grid(a,b,c,nrow=3)
+	  dev.off()
+	}
+}
+
 
 getSampleFromDevice=function(deviceNo){
   seqIndex=question[question$QuizDevice==deviceNo,2]
