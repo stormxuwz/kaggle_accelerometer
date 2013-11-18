@@ -3,8 +3,8 @@ library(lubridate)
 library(ggplot2)
 library(gridExtra)
 
-setwd("/Users/XuWenzhao/Documents/Dropbox/Courses/Homework/STAT 542/Project")
-load("data")
+setwd("/Users/XuWenzhao/Documents/Developer/kaggle_accelerometer")
+ffload("data")
 
 loadDevice=function(deviceNo){
 	deviceName=paste("Train_Device_",as.character(deviceNo),sep="")
