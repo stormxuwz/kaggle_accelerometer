@@ -35,6 +35,21 @@
 		\caption{Test Sequence with Professed Device as 770}
 	\end{figure}
 	
+	\paragraph{} We also came up with Figure 3 and Figure 4 when we conducted exploratory data analysis to have more sense of the data set. In each 2 by 2 plot, the top left graph comes from training data for a given device and the other 3 are sampled from test sequences that are claimed also from the given device. Figire 3 shows another device that its training data and test sequences have gaps in sampling. In fact, such sampling gaps exist common in the whole data set. In Figure 4, one of the test sequences has very large variance (upper left figure) and Z axis acceleration values (blue dots) probably have outliers, which lies in the region occupied by red dots.
+	
+ \begin{figure}[ht]
+ 	\centering
+ 	\includegraphics[width=1\textwidth]{photoshare/Device-12.png}
+ 	\caption{Training data and test sequence labeled as Device 12}
+ \end{figure}
+
+
+ \begin{figure}[ht]
+ 	\centering
+	\includegraphics[width=1\textwidth]{photoshare/Device-67.png}
+ 	\caption{Training data and test sequence labeled as Device 67}
+ \end{figure}
+	
 	% section section_name (end)
 	
 
@@ -47,18 +62,11 @@
 		\item Second, Supervised or Unsupervised?
 			\begin{itemize}
 			\item Treat it as a time-constrained classification problem, more specifically, a multi-classification problem, i.e. each device is a unique class. It seems that one-all should suffice this task. For a professed device Id, label 1 if true and 0 if its other device's Id. Since data are generated in different time intervals, training data might have different patterns during different time period. So given a test sequence $X_{test}$, we denote its time of day as $T_{test}$ (e.g. $T_{test}=19:00$). Then search all the training data and extract available training sequences (denote as $X_{train}$) that were fuzzily close to $T_{test}$. For the test sequence $X_{test}$, a professed device $D$ is known. We can label the training sequences from device $D$ as 1 and the training sequence from other device as 0. Based on the features we extract, train some classifiers with these training examples. Finally, apply the classifier to the test sequence to see wether it is 0 (test sequence is belong to other device) or 1 (test sequence is belong to device $D$).\\
-			\item Learn a standardized ranking based probability metric indicating the similarity of a given test sequence and the associated training device. The heuristics behind this is if a test sequence comes from the claimed device, it should be most similar (defined by some similarity metrics like Euclidean distance, cosine similarity and so on) to this device instead of another. And the extracted features are only used to learn the weights of similarity features, which is different from a classification aaproach.
+			\item Learn a standardized ranking based probability metric indicating the similarity of a given test sequence and the associated training device. The heuristics behind this is if a test sequence comes from the claimed device, it should be most similar (defined by some similarity metrics like Euclidean distance, cosine similarity and so on) to this device instead of another. And the extracted features are only used to learn the weights of similarity features, which is different from a classification approach.
 			\end{itemize}
 	\end{itemize}
 	Note: identifying what activity the test sequence represents such as running or walking or sleeping is also important. If the test sequence is from running but the running pattern from professed device is totally different with what test sequence reveals, then the professed device is probably a wrong device. 
-	\paragraph{} We came up with these plots when we conducted exploratory data analysis, in each 2 by 2 plot, the top left graph comes from training data for a given device and the other 3 are sampled from test sequences that are claimed also from the given device.
 
-	% \begin{figure}[ht]
-	% 	\centering
-	% 	\subfloat[Device 12]{\includegraphics[width=1\textwidth]{photoshare/Device-12.png}}\\
-	% 	%\subfloat[Device 12]{\includegraphics[width=1\textwidth]{photoshare/Device-12.png}}
-	% 	\caption{Training data and test sequence labeled as Device 12}
-	% \end{figure}
 
 
 
@@ -66,7 +74,7 @@
 	\label{sec:timeline}
 	\begin{itemize}
 		\item Research on literatures with acceleration data
-		\item Extract important features 
+		\item Data preprocessing to remove potential outliers and extract important features 
 		\item Initial result done (before the end of thanksgiving holiday)
 		\item Discussion with instructors, improve results and write up
 	\end{itemize}

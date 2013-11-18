@@ -1,8 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  18 NOV 2013 15:25
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  18 NOV 2013 15:56
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**ProjectProposal.tex -recorder
+**ProjectProposal.tex
 (./ProjectProposal.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
@@ -312,51 +313,66 @@ File: photoshare/838966.png Graphic file (type png)
 <use photoshare/838966.png>
 Package pdftex.def Info: photoshare/838966.png used on input line 34.
 (pdftex.def)             Requested size: 433.62001pt x 108.39879pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 46.
+
+<photoshare/Device-12.png, id=6, 481.8pt x 481.8pt>
+File: photoshare/Device-12.png Graphic file (type png)
+
+<use photoshare/Device-12.png>
+Package pdftex.def Info: photoshare/Device-12.png used on input line 42.
+(pdftex.def)             Requested size: 433.62001pt x 433.63069pt.
+
+<photoshare/Device-67.png, id=7, 481.8pt x 481.8pt>
+File: photoshare/Device-67.png Graphic file (type png)
+
+<use photoshare/Device-67.png>
+Package pdftex.def Info: photoshare/Device-67.png used on input line 49.
+(pdftex.def)             Requested size: 433.62001pt x 433.63069pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 61.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 46.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 61.
+ [1
 
-Overfull \hbox (4.04736pt too wide) in paragraph at lines 49--50
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./p
+hotoshare/770.png> <./photoshare/7.png> <./photoshare/690194.png> <./photoshare
+/838966.png>]
+Overfull \hbox (4.04736pt too wide) in paragraph at lines 64--65
 []\OT1/cmr/m/n/10 Treat it as a time-constrained clas-si-fi-ca-tion prob-lem, m
 ore specif-i-cally, a multi-classification
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
 
  []
 
-[1
-
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2 <./photoshare/770.png> <./photoshare/7.png> <./photoshare/690194.png> <./pho
-toshare/838966.png>] [3] (./ProjectProposal.aux) ) 
+[3] [4 <./photoshare/Device-12.png>] [5 <./photoshare/Device-67.png>]
+(./ProjectProposal.aux) ) 
 Here is how much of TeX's memory you used:
- 3808 strings out of 493315
- 57755 string characters out of 6137904
- 130222 words of memory out of 5000000
- 7220 multiletter control sequences out of 15000+600000
+ 3818 strings out of 493315
+ 58011 string characters out of 6137904
+ 129222 words of memory out of 5000000
+ 7228 multiletter control sequences out of 15000+600000
  8716 words of font info for 32 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 44i,10n,47p,1113b,356s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf
--dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2013/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb>
-Output written on ProjectProposal.pdf (3 pages, 661758 bytes).
+ 44i,10n,47p,1103b,356s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi7.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy10.pfb>
+Output written on ProjectProposal.pdf (5 pages, 792018 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 69 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
