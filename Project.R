@@ -1,14 +1,19 @@
-library("ff")
+library(ff)
 library(lubridate)
 library(ggplot2)
 library(gridExtra)
+library(class)
+library()
+
 
 source("/Users/XuWenzhao/Developer/kaggle_accelerometer//Funclist.R")
 
 setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/")
-ffload("data")
 
-
+ffload("traindata.ff")
+ffload("testdata.ff")
+load("feature.RData")
+load("basic.RData")
 
 
 ### Reading the data ####
@@ -21,24 +26,18 @@ device=unique(no.device)
 y<- read.csv.ffdf(file="/Users/XuWenzhao/Developer/DataSource/Kaggle/test.csv", header=TRUE, VERBOSE=TRUE, first.rows=10000, next.rows=50000, colClasses=NA)
 no.sample=y[,5]
 sample=unique(no.sample)
-#Reading questions
+#Reading questions and basic information
 question=read.csv("questions.csv",header=T)
-# Store the x, and y
-ffsave(x, file="traindata.ff")
-ffsave(y, file="testdata.ff")
-
-## Store the training device and sampling device with time and hour
-
-ffload("traindata.ff")
-ffload("testdata.ff")
-load("feature.RData")
-
 no.device=x[,5]
 device=unique(no.device)
 no.sample=y[,5]
 sample=unique(no.sample)
-#Reading questions
-question=read.csv("questions.csv",header=T)
+# Store the x, and y
+ffsave(x, file="traindata.ff")
+ffsave(y, file="testdata.ff")
+save(no.device,device,no.sample,sample,question,file="basic.RData")
+
+
 
 traindata=list()
 testdata=list()
@@ -80,6 +79,10 @@ for(i in sample(dd$SequenceId,10)){
 
 
 
+###
+
+
+
 
 
 ### Find the nearest time period
@@ -104,9 +107,6 @@ simiTime <- function(testSample) {
 	
 	plotdevice(dataSet)
 }
-
-
-
 
 for(i in 1:nrow(trainset)){
 	print(i);

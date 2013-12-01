@@ -1,0 +1,66 @@
+\documentclass{article}
+\author{Wenzhao Xu}
+\title{STAT 542 Mid Report}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{multirow}
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}
+
+
+\begin{document}
+	\maketitle
+	
+	\section{Introduction} % (fold)
+	\label{sec:introduction}
+	\paragraph{} The data is going to 
+	
+	% section introduction (end)
+	
+	\section{Method} % (fold)
+	\label{sec:method}
+	\paragraph{} The basic assumption is that each user will behavior similar if he/she is doing the same activity and he/she probaby do the same activity at the same time of day. Given the training data of a certain device, we first divided the whole data into pieces, each has 300 points (300 is a tuning parameters). For most devices, 300 sampling points will last for about 1 minute and we assume the user is doing the same activities in this 1 minute. Each piece represent an activity of the user, no matter what the activity is. So for train data of a device, we have several pieces and all have the same label as that device. Features are extracted from these pieces and also from the test sequences. Then we can do the classification. 
+	
+		\subsection{Data Preparation} % (fold)
+		\label{sub:idea}
+		\paragraph{} The data is imported into R by "ff" packages (SQL database is also capcable). 
+		
+		% subsection idea (end)
+	
+		\subsection{Feature Extraction} % (fold)
+		\label{sub:feature_extraction}
+		
+		\paragraph{}First, the total acceralation value is calculated by $A=\sqrt{(a_x^2+a_y^2+a_z^2)}$ and added. Based on literature research, 3 kind of features are extracted from the raw data. The first is mean and variance. The second is the correlation, the last is the frequency pattern. 
+		\begin{table}
+			\centering
+			\begin{tabular}{c|p{5cm}|p{5cm}}
+			Kind & Description & Physical Meanings \\ \hline
+			Mean and Variance & Mean and variance of acceleration values in each axis as well as the total accerlation $A$ & The habbit of how user put their cellphones \\ \hline
+			Correlation & the correlation coefficients between x and y, x and z, and y and z axis. & The users features when walking \\ \hline
+			Frequency Features & The mean value of the first 5 dominate frequencies (frequencies with highest amplitude) and mean value of energy by these frequencies & Users walking features.
+			\end{tabular}
+			
+		\end{table}
+		
+		
+		
+		% subsection feature_extraction (end)
+	
+		\subsection{Classifier} % (fold)
+		\label{sub:classifier}
+		
+		% subsection classifier (end)
+	
+	% section method (end)
+	
+	\section{Result} % (fold)
+	\label{sec:result}
+	
+	% section result (end)
+	
+	\section{Future Work} % (fold)
+	\label{sec:future_work}
+	
+	% section future_work (end)
+	
+\end{document}

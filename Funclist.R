@@ -111,7 +111,7 @@ plotCompare=function(deviceNo){
 
 
 featureExtract <- function(trainDevice) {
-  deviceNo=trainDevice$Device[1] 
+  deviceNo=trainDevice[1,5]
   trainDevice$A=sqrt(trainDevice$X^2+trainDevice$Y^2+trainDevice$Z^2)
 	
 	# mean and variance of each component and the net value
@@ -161,50 +161,78 @@ featureExtract <- function(trainDevice) {
 	energA=mean(Afft[[2]])
 	
 	# time dependent special features
+	time=mean(trainDevice$hour)
 	
 		### to be determined
 	
-  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,corxy,corxz,coryz,freX,freY,freZ,freA,energX,energY,energZ,energA)
+  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,corxy,corxz,coryz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
   
   return(feature)
 }
 
 
-
-
-TraindataFeature <- function(traindata){
-  feature=featureExtract(getDevice(x,device[1]))
-  
-  for(i in device){
-    deviceFeature=featureExtract(getDevice(x,i))
-    feature=rbind(feature,deviceFeature)
+trainFeatureExtract <- function(rawdata,index){
+	featurematrix=featureExtract(getDevice(rawdata,1017)[1:300,])  ##initial Format
+	for(i in index){
+		dataset=getDevice(rawdata,i)
+    dataset=dataFilter(dataset)
+		EDlist=createED(dataset)
+		for(subdata in EDlist){
+			deviceFeature=featureExtract(subdata)
+	    featurematrix=rbind(featurematrix,deviceFeature)
+		}
   }
-  return(feature)
+	
+	featurematrix=featurematrix[-1,]
+  return(featurematrix)
 }
+
+testFeatureExtract <- function(rawdata,index){
+	featurematrix=featureExtract(getDevice(rawdata))  ##initial Format
+	for(i in index){
+		dataset=getDevice(rawdata,i)
+    dataset=dataFilter(dataset)
+		deviceFeature=featureExtract(dataset)
+	  featurematrix=rbind(featurematrix,deviceFeature)
+  }
+	featurematrix=featurematrix[-1,]
+  return(featurematrix)
+}
+
+
 
 
 dataFilter <- function(traindata){
-	traindata=traindata[diff(traindata$T)!>1,]
-	
-	
+	traindata=traindata[diff(traindata$T)>1,]
+	return(traindata)
 }
 
 
-classifier <- function(traindata){}
+
+
+
+
+createLabel <- function(traindata){
+	# This is the function is to create the label of dataset. Instead of use multi class data set, we can use two data set.
+	# To be determined
+	
+	
+	
+}
 
 
 
 createED <- function(traindata,range=300) {
 	timedifference=diff(traindata$T)
-	breaktime=which(timedifference>10*60*1000) #if the difference time is larger than 2 mins, then divided into 2 parts
+	breaktime=which(timedifference>2*60*1000) #if the difference time is larger than 2 mins, then divided into 2 parts
 	seglist=list()
-	
-	if(length(breaktime)>0){
-		periodstart=1
-		for(i in 1:length(breaktime)){
-			periodfinish=breaktime[i]
+	breaktime=c(1,breaktime,nrow(traindata))
+  
+	if(length(breaktime)>2){
+		for(i in 1:(length(breaktime)-1)){
+      periodstart=breaktime[i]
+			periodfinish=breaktime[i+1]
 			seglist[[i]]=traindata[periodstart:periodfinish,]
-			periodstart=periodfinish+1
 		}
 	}else{
 		seglist[[1]]=traindata
@@ -214,10 +242,12 @@ createED <- function(traindata,range=300) {
 	count=0
 	for(subdata in seglist){
 		no.part=floor(nrow(subdata)/range)
-		for (j in 1:no.part)
-			count=count+1
-			EDlist[[count]]=subdata[(j-1)*300+1:j*300,]
+		if(no.part>0){
+		  for (j in 1:no.part){
+		    count=count+1
+		    EDlist[[count]]=subdata[((j-1)*range+1):(j*range),]
+		  }
+		}
 	}
-
 	return(EDlist)
 }
