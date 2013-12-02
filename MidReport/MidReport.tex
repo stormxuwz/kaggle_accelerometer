@@ -19,9 +19,9 @@
 	
 	\section{Method} % (fold)
 	\label{sec:method}
-	\paragraph{} The basic assumption is that each user will behavior similar if he/she is doing the same activity and he/she would probabily do the same activity at the same time of day. 
-	\paragraph{}First we treat it as a multi-label problems, that is trying to predict which device generates the test sequence. Given the training data of a certain device, we first divided the whole training data into pieces, each has around 400 points (400 is a tuning parameters). For most devices, 400 sampling points will last for about 1 minute and we assume the user is doing the same activities in this 1 minute. Each piece represents an activity, no matter what the activity is. So for train data of a device, we have several pieces and all of them have the same label as that device ID. Features are extracted from these pieces and also from the test sequences. In this way, we have training sequences with labels and test sequences. Certain classifier is trained and predicted the labels of test sequences.
-	\paragraph{} We also tried to change the problem as a 0-1 classification problem. XXXXX, currently, we are still working on it. 
+	\paragraph{} The basic assumption is that each user will have similar behaviors if he/she is doing the same activity like walking and running and he/she would probabily do the same activity at the same time of day. 
+	\paragraph{}First we treat it as a multi-class problems, that is trying to predict which device generates the test sequence. Given the training data of a certain device, we first divided the whole training data into pieces, each has around 400 points (400 is a tuning parameters). For most devices, 400 sampling points will last for about 1 minute and we assume the user is doing the same activities in this 1 minute. Each piece represents an activity, no matter what the activity is. So for train data of a device, we have several pieces and all of them have the same label as that device ID. Features are extracted from these pieces and also from the test sequences. In this way, we have training sequences with labels and test sequences. Certain classifier is trained and predicted the labels of test sequences.
+	\paragraph{} We are also trying to change the problem as a 0-1 classification problem. A possible approach is to use self-boosting. The general idea is that we randomly choose sequences from training data, this way we know what devices they belong to so that we could label them as 1. To label negative examples, we choose sequences from one device and claim it to be from another device. Currently, we are still working on it. 
 	
 		\subsection{Data Preparation} % (fold)
 		\label{sub:idea}
@@ -71,15 +71,15 @@
 	
 		\subsection{Classification} % (fold)
 		\label{sub:classifier}
-		\paragraph{} For simplicity, currently we just use KNN methods to detemine which device generate the test sequence. This is a multi-label classification problem, so other available methods include random forest and regression. 
+		\paragraph{} For simplicity, currently we just use KNN methods to detemine which device generate the test sequence. This is a multi-class classification problem, so other available methods include random forest, ANN and regression. 
 		
-		\paragraph{} However, if we treat the problem as a binary classification problem, common classifiers like SVM or Logistics Regression are applicable. The key challenge is how we automatic generate high quality training set from the given training data. We use self-boosting. The general idea is we randomly choose sequences from training data, this way we know what devices they belong to so that we could label them as 1. To label negative examples, we choose sequences from one device and claim it to be from another device. Then we train the model using the above training examples and apply SVM or Logistics Regression on test data.
+		\paragraph{} However, if we treat the problem as a binary classification problem, common classifiers like SVM or Logistics Regression are applicable. The key challenge is how we automatic generate high quality training set from the given training data by self boosting. Then we train the model using the above training examples and apply SVM or Logistics Regression on test data.
 		% subsection classifier (end)
 	% section method (end)
 	
 	\section{Result} % (fold)
 	\label{sec:result}
-	\paragraph{} The data preparation and feature extraction took about 20 mins from training data and 34 mins for test data. For simplicity, KNN is first used to predict the test sequences. The features are first scaled and we all the features except the time features. The result is uploaded to the kaggle website to see the result. We do some initial features selection and the result is shown in Table 2. 
+	\paragraph{} The data preparation and feature extraction took about 20 mins from training data and 34 mins for test data. For simplicity, KNN is first used to predict the test sequences. The features are first scaled and we all the features except the time features. The result is uploaded to the kaggle website to see the result. We do some initial features selection and the result is shown in Table 2. Kind 1,2,3,4 represent the mean and variance features, correlation features, frequency features and time features, respectively.
 	\begin{table}
 		\centering
 		\caption{Prediction Result}
@@ -90,14 +90,13 @@
 			Kind 1,2,3,4 & 20 & 0.5 & 619 \\
 		\end{tabular}
 	\end{table}
-	The best is with score as 61.843 and rank as 481, which is better than the KNN benchmark. Full features does't perform which indicates the users might not behavior similar in the same day of time or the weights of features need more analysis. In addition, frequency features are very important to improving the performance. 
+	The best performance gets score as 61.843 and rank as 481, which is better than the KNN benchmark. Full features does't perform well which indicates the users might not behave similarily in the same day of time or the weights of features need more analysis. In addition, frequency features are very important in improving the performance. 
 	
 	
 	% section result (end)
-	
 	\section{Future Work} % (fold)
 	\label{sec:future_work}
-	\paragraph{} We will work on feature extraction and also tune the size of training pieces. Moreover, other methods such as random forest and ANN will be applied to see the improvement. Finally, feature selections will also be performed. 
+	\paragraph{} We will work on feature extraction and also tune the some parameters such as size of training sequences. Moreover, other methods such as random forest and ANN will be applied to see the improvement. Finally,feature selections will also be performed. If we sucessfully convert the problem into a 0-1 classification problem, we will also compare the performance of these two frameworks.
 	% section future_work (end)
 	
 \end{document}
