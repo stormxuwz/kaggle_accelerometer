@@ -69,11 +69,11 @@
 
 		% subsection feature_extraction (end)
 	
-		\subsection{Classifier} % (fold)
+		\subsection{Classification} % (fold)
 		\label{sub:classifier}
 		\paragraph{} For simplicity, currently we just use KNN methods to detemine which device generate the test sequence. This is a multi-label classification problem, so other available methods include random forest and regression. 
 		
-		\paragraph{} However, if we treat the problem as a bi-label problem, other method such as SVM is also available. XXXXX
+		\paragraph{} However, if we treat the problem as a binary classification problem, common classifiers like SVM or Logistics Regression are applicable. The key challenge is how we automatic generate high quality training set from the given training data. We use self-boosting. The general idea is we randomly choose sequences from training data, this way we know what devices they belong to so that we could label them as 1. To label negative examples, we choose sequences from one device and claim it to be from another device. Then we train the model using the above training examples and apply SVM or Logistics Regression on test data.
 		% subsection classifier (end)
 	% section method (end)
 	
@@ -90,14 +90,14 @@
 			Kind 1,2,3,4 & 20 & 0.5 & 619 \\
 		\end{tabular}
 	\end{table}
-	The best is with score as 61.843 and rank as 481, which is better than the KNN benchmark. Full features does't perform which indicates the users might not behavior similar in the same day of time or the weights of features need more analysis. In addition, frequency features are very important to improve the performance. 
+	The best is with score as 61.843 and rank as 481, which is better than the KNN benchmark. Full features does't perform which indicates the users might not behavior similar in the same day of time or the weights of features need more analysis. In addition, frequency features are very important to improving the performance. 
 	
 	
 	% section result (end)
 	
 	\section{Future Work} % (fold)
 	\label{sec:future_work}
-	\paragraph{} We plan to take a better analysis on feature extraction, and also take smaller or larger training pieces to see the change of results. Moreover, other method such as random forest and ANN will be applied to see the improvment. Finally, features selections will also be performed. 
+	\paragraph{} We will work on feature extraction and also tune the size of training pieces. Moreover, other methods such as random forest and ANN will be applied to see the improvement. Finally, feature selections will also be performed. 
 	% section future_work (end)
 	
 \end{document}
