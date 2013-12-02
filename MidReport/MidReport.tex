@@ -79,7 +79,7 @@
 	
 	\section{Result} % (fold)
 	\label{sec:result}
-	\paragraph{} The data preparation and feature extraction took about 20 mins from training data and 34 mins for test data. For simplicity, KNN is first used to predict the test sequences. The features are first scaled and we all the features except the time features. The result is uploaded to the kaggle website to see the result. We do some initial features selection and the result is shown in Table 2. Kind 1,2,3,4 represent the mean and variance features, correlation features, frequency features and time features, respectively.
+	\paragraph{} The data preparation and feature extraction took about 20 mins from training data and 34 mins for test data. For simplicity, KNN-1 is first used to predict the test sequences. The features are first scaled and we all the features except the time features. The result is uploaded to the kaggle website to see the result. We do some initial features selection and the result is shown in Table 2. Kind 1,2,3,4 represent the mean and variance features, correlation features, frequency features and time features, respectively.
 	\begin{table}
 		\centering
 		\caption{Prediction Result}
@@ -90,7 +90,7 @@
 			Kind 1,2,3,4 & 20 & 0.5 & 619 \\
 		\end{tabular}
 	\end{table}
-	The best performance gets score as 61.843 and rank as 481, which is better than the KNN benchmark. Full features does't perform well which indicates the users might not behave similarily in the same day of time or the weights of features need more analysis. In addition, frequency features are very important in improving the performance. 
+	The best performance gets score as 0.61843 and rank as 481, which is better than the KNN benchmark. Full features does't perform well which indicates the users might not behave similarily in the same day of time or the weights of features need more analysis. In addition, frequency features are very important in improving the performance. 
 	
 	
 	% section result (end)
