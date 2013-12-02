@@ -3,7 +3,6 @@ library(lubridate)
 library(ggplot2)
 library(gridExtra)
 library(class)
-library()
 
 
 source("/Users/XuWenzhao/Developer/kaggle_accelerometer//Funclist.R")
@@ -14,7 +13,8 @@ ffload("traindata.ff")
 ffload("testdata.ff")
 load("feature.RData")
 load("basic.RData")
-
+load("trainFeature.RData")
+load("testFeature.RData")
 
 ### Reading the data ####
 

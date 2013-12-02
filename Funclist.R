@@ -172,15 +172,26 @@ featureExtract <- function(trainDevice) {
 
 
 trainFeatureExtract <- function(rawdata,index){
-	featurematrix=featureExtract(getDevice(rawdata,1017)[1:300,])  ##initial Format
-	for(i in index){
-		dataset=getDevice(rawdata,i)
-    dataset=dataFilter(dataset)
+  load(paste("/Users/XuWenzhao/Developer/DataSource/Kaggle/Train/Train_Device_",1017,".RData",sep=""))
+  featurematrix=featureExtract(timechange(tmp))  ##initial Format
+	rm(tmp)
+  for(i in index){
+    print(i)
+    a=Sys.time()
+    load(paste("/Users/XuWenzhao/Developer/DataSource/Kaggle/Train/Train_Device_",i,".RData",sep=""))
+		#dataset=getDevice(rawdata,i)
+    print("finishing loading")
+    dataset=timechange(tmp)
+    rm(tmp)
 		EDlist=createED(dataset)
+    print("finishing splitting")
+    print(length(EDlist))
 		for(subdata in EDlist){
+      subdata=dataFilter(subdata)
 			deviceFeature=featureExtract(subdata)
 	    featurematrix=rbind(featurematrix,deviceFeature)
 		}
+    print(Sys.time()-a)
   }
 	
 	featurematrix=featurematrix[-1,]
@@ -189,48 +200,108 @@ trainFeatureExtract <- function(rawdata,index){
 
 testFeatureExtract <- function(rawdata,index){
 	featurematrix=featureExtract(getDevice(rawdata))  ##initial Format
-	for(i in index){
-		dataset=getDevice(rawdata,i)
-    dataset=dataFilter(dataset)
-		deviceFeature=featureExtract(dataset)
-	  featurematrix=rbind(featurematrix,deviceFeature)
-  }
+	
+  if(index==0){
+    count=nrow(rawdata)/300
+    for(i in 1:count){
+      print(i)
+      dataset=rawdata[((i-1)*300+1):(i*300),]
+      dataset=timechange(dataset)
+   
+      timeInterval=diff(dataset$T)
+      timebreak=which(timeInterval>3*60*1000)
+      maxtimebreak=which.max(timeInterval)
+      
+      if(length(timebreak)>0){
+        data1=dataset[1:maxtimebreak,]
+        data2=dataset[(maxtimebreak+1):300,]
+        
+        if(nrow(data1)>=nrow(data2))
+          dataset=data1
+        else
+          dataset=data2
+      }
+			
+      dataset=dataFilter(dataset)
+      deviceFeature=featureExtract(dataset)
+      featurematrix=rbind(featurematrix,deviceFeature)
+    }
+	}else{
+	  for(i in index){
+	    dataset=getDevice(rawdata,i)
+	    #dataset=dataFilter(dataset)
+	    deviceFeature=featureExtract(dataset)
+	    featurematrix=rbind(featurematrix,deviceFeature)
+	  }
+	}
+ 
 	featurematrix=featurematrix[-1,]
   return(featurematrix)
 }
 
 
-
-
-dataFilter <- function(traindata){
-	traindata=traindata[diff(traindata$T)>1,]
-	return(traindata)
+dataFilter <- function(dataset){
+	dataset=dataset[diff(dataset$T)>1,]
+  timerange=range(dataset$T)
+  totaltime=diff(timerange)
+  averageSamplingRate=floor(median(diff(dataset$T)))
+  
+  newSamplePoint=seq(from=timerange[1],to=timerange[2],by=averageSamplingRate)
+  
+  lint <- function(axisValue){
+    # Linear Interpolation
+    newvalue=approx(x=dataset$T,y=axisValue,xout=newSamplePoint)$y
+    # 5-point smoothing
+    ma5 = c(1, 1, 1, 1, 1)/5
+    smoothvalue=filter(newvalue,ma5)
+    naIndex=which(is.na(smoothvalue)==T)
+    n=length(smoothvalue)
+    iniValue=smoothvalue[3]
+    endValue=smoothvalue[n-2]
+    
+    smoothvalue[1:2]=iniValue
+    smoothvalue[(n-1):n]=endValue
+    
+    return(as.numeric(smoothvalue))
+  }
+  
+  newX=lint(dataset$X)
+  newY=lint(dataset$Y)
+  newZ=lint(dataset$Z)
+  
+  newdata=data.frame(T=newSamplePoint)
+  newdata$X=newX
+  newdata$Y=newY
+  newdata$Z=newZ
+	newdata$Device=dataset$Device[1]
+	
+  newdata=timechange(newdata)
+  
+  #plt1=plotdevice(dataset)
+  #plt2=plotdevice(newdata)
+  #grid.arrange(plt1,plt2,ncol=2)
+  
+	return(newdata)
 }
-
-
-
-
 
 
 createLabel <- function(traindata){
 	# This is the function is to create the label of dataset. Instead of use multi class data set, we can use two data set.
-	# To be determined
-	
-	
-	
+	# To be determined	
 }
 
 
 
-createED <- function(traindata,range=300) {
+createED <- function(traindata,range=400) {
 	timedifference=diff(traindata$T)
 	breaktime=which(timedifference>2*60*1000) #if the difference time is larger than 2 mins, then divided into 2 parts
-	seglist=list()
-	breaktime=c(1,breaktime,nrow(traindata))
+	breaktime=breaktime
+  seglist=list()
+	breaktime=c(0,breaktime,nrow(traindata))
   
 	if(length(breaktime)>2){
 		for(i in 1:(length(breaktime)-1)){
-      periodstart=breaktime[i]
+      periodstart=breaktime[i]+1
 			periodfinish=breaktime[i+1]
 			seglist[[i]]=traindata[periodstart:periodfinish,]
 		}
@@ -251,3 +322,12 @@ createED <- function(traindata,range=300) {
 	}
 	return(EDlist)
 }
+
+
+plotcompare2 <- function(sample,device1,device2){
+  plt1=plotdevice(sample)
+  plt2=plotdevice(device1)
+  plt3=plotdevice(device2)
+  grid.arrange(plt1,plt2,plt3,nrow=3)
+}
+
