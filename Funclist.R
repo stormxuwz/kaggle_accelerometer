@@ -282,9 +282,9 @@ dataFilter <- function(dataset){
 	
   newdata=timechange(newdata)
   
-  #plt1=plotdevice(dataset)
-  #plt2=plotdevice(newdata)
-  #grid.arrange(plt1,plt2,ncol=2)
+  plt1=plotdevice(dataset)
+  plt2=plotdevice(newdata)
+  grid.arrange(plt1,plt2,ncol=2,main=as.character(newdata$Device[1]))
   
 	return(newdata)
 }
