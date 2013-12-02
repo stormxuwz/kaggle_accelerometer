@@ -85,12 +85,12 @@
 		\caption{Prediction Result}
 		\begin{tabular}{c|c|c|c}
 			Feature Selection & Num of Features & Score & Rank \\ \hline
-			Kind 1,2 & 11 & 0.49995 & 621 \\ 
+			Kind 1,2 & 11 & 0.60682 & 491 \\
 			Kind 1,2,3 & 19 & 0.61843 & 481 \\ 
-			Kind 1,2,3,4 & 20 & 0.5 & 619 \\
+			Kind 1,2,3,4 & 20 & 0.61869 & 481 \\
 		\end{tabular}
 	\end{table}
-	The best performance gets score as 0.61843 and rank as 481, which is better than the KNN benchmark. Full features does't perform well which indicates the users might not behave similarily in the same day of time or the weights of features need more analysis. In addition, frequency features are very important in improving the performance. 
+	The best performance gets score as 0.61843 and rank as 481, which is better than the KNN benchmark. Full features perform slightly better which indicates the simple information of day of time have a little usefulness. In addition, frequency features and correlation features are very important in improving the performance.
 	
 	
 	% section result (end)
