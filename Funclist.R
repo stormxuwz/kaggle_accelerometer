@@ -125,10 +125,15 @@ featureExtract <- function(trainDevice) {
 	Avar=var(trainDevice$A)
 	
 	# correlation of each component
-	cormatrix=cor(trainDevice[,c("X","Y","Z")])
-	corxy=cormatrix[1,2]
-	corxz=cormatrix[1,3]
-	coryz=cormatrix[2,3]
+	covmatrix=cov(trainDevice[,c("X","Y","Z")])
+	covxy=covmatrix[1,2]
+	covxz=covmatrix[1,3]
+	covyz=covmatrix[2,3]
+	
+	#cormatrix=cor(trainDevice[,c("X","Y","Z")])
+	#corxy=cormatrix[1,2]
+	#corxz=cormatrix[1,3]
+	#coryz=cormatrix[2,3]
 	
 	# fourier analysis
 	samplefre=mean(diff(trainDevice$T))
@@ -165,7 +170,7 @@ featureExtract <- function(trainDevice) {
 	
 		### to be determined
 	
-  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,corxy,corxz,coryz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
+  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,covxy,covxz,covyz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
   
   return(feature)
 }
@@ -273,7 +278,7 @@ dataFilter <- function(dataset){
   newdata$X=newX
   newdata$Y=newY
   newdata$Z=newZ
-	newdata$Device=dataset$Device[1]
+	newdata$Device=dataset[1,5]
 	
   newdata=timechange(newdata)
   
