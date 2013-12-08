@@ -125,22 +125,22 @@ featureExtract <- function(trainDevice) {
 	Avar=var(trainDevice$A)
 	
 	# correlation of each component
-	#covmatrix=cov(trainDevice[,c("X","Y","Z")])
-	#covxy=covmatrix[1,2]
-	#covxz=covmatrix[1,3]
-	#covyz=covmatrix[2,3]
+	covmatrix=cov(trainDevice[,c("X","Y","Z")])
+	covxy=covmatrix[1,2]
+	covxz=covmatrix[1,3]
+	covyz=covmatrix[2,3]
 	
-	cormatrix=cor(trainDevice[,c("X","Y","Z")])
-	corxy=cormatrix[1,2]
-	corxz=cormatrix[1,3]
-	coryz=cormatrix[2,3]
+	#cormatrix=cor(trainDevice[,c("X","Y","Z")])
+	#corxy=cormatrix[1,2]
+	#corxz=cormatrix[1,3]
+	#coryz=cormatrix[2,3]
 	
 	# fourier analysis
 	samplefre=mean(diff(trainDevice$T))
 	time=diff(range(trainDevice$T))/1000
 	
-	fftfunc <- function(D,impt){ #D is the time series, crit is threhold. i.e. crit=0.1 means ignore the frequencies with below 10% amplitude.
-		D_fft=fft(D)
+	fftfunc <- function(D,impt){ #D is the time series
+	  D_fft=fft(D)    
 		A=Mod(D_fft) #A is the amplitude
 		A=A[1:(length(A)/2)]
 					
@@ -150,10 +150,10 @@ featureExtract <- function(trainDevice) {
 		return(list(dominfre,domineneg))
 	}
 	
-	xfft=fftfunc(trainDevice$X,4)
-	yfft=fftfunc(trainDevice$Y,4)
-	zfft=fftfunc(trainDevice$Z,4)
-	Afft=fftfunc(trainDevice$A,4)
+	xfft=fftfunc(trainDevice$X,2)
+	yfft=fftfunc(trainDevice$Y,2)
+	zfft=fftfunc(trainDevice$Z,2)
+	Afft=fftfunc(trainDevice$A,2)
 	
 	freX=mean(xfft[[1]])
 	freY=mean(yfft[[1]])
@@ -170,7 +170,7 @@ featureExtract <- function(trainDevice) {
 	
 		### to be determined
 	
-  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,corxy,corxz,coryz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
+  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,covxy,covxz,covyz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
   
   return(feature)
 }

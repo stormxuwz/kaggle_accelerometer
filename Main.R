@@ -5,17 +5,18 @@ library(ggplot2)
 library(gridExtra)
 library(class)
 
-
-source("/Users/XuWenzhao/Developer/kaggle_accelerometer//Funclist.R")
-
+source("/Users/XuWenzhao/Developer/kaggle_accelerometer/Funclist.R")
 setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/")
 
 ffload("traindata.ff")
 ffload("testdata.ff")
 load("basic.RData")
-load("trainFeature2_modified.RData")
-load("testFeature2_modified.RData")
+load("trainFeature_cov_300.RData")
+load("testFeature2_cov_300.RData")
 
+FeatureName=c("V1","xmean","ymean","zmean","xvar","yvar","zvar","Amean","Avar","covxy","covxz","covyz","freX","freY","freZ","freA","eneX","eneY","eneZ","eneA","hour")
+rownames(trainFeature)=NULL
+rownames(testFeature)=NULL
 
 ######################################
 #########    Extract the features
@@ -24,52 +25,78 @@ load("testFeature2_modified.RData")
 a=Sys.time()
 trainFeature=trainFeatureExtract(x,device)
 traintime=Sys.time()-a
-save(trainFeature,file="trainFeature2_modified.RData")
+save(trainFeature,file="trainFeature_cov_300.RData")
 
 b=Sys.time()
 testFeature=testFeatureExtract(y,0)
 testtime=Sys.time()-b
-save(testFeature,file="testFeature2_modified.RData")
+save(testFeature,file="testFeature2_cov_300.RData")
 
 
 ######################################
 #########    Prepare the data
 ######################################
 
+trainFeature=as.data.frame(trainFeature)
+trainFeature$V1=as.factor(trainFeature$V1)
+testFeature=as.data.frame(testFeature)
+
+featureIndex=c(2:21)
 
 train.Y=as.factor(trainFeature[,1])
 
-train.X=trainFeature[,2:20]
+train.X=trainFeature[,featureIndex]
 train.X=scale(train.X)
 centering=attr(train.X,"scaled:center")
 scaling=attr(train.X,"scaled:scale")
 
-test.X=testFeature[,2:20] 
+test.X=testFeature[,featureIndex] 
 test.X=scale(test.X,center=centering,scale=scaling)
 
 #######################################################
 ## Multi-label Classifier
 #######################################################
 ### Run Knn
-knn.model=knn(train=train.X,test=test.X,cl=train.Y,k=1)
+cv.ratio=NULL
+
+for(i in 1:5){
+  trainNum=nrow(train.X)
+  train.Index=sample(1:trainNum,floor(0.8*trainNum))
+  valid.Index=c(1:trainNum)[-train.Index]
+  
+  
+  train.X_train=train.X[train.Index,]
+  train.Y_train=train.Y[train.Index]
+  valid.X=train.X[valid.Index,]
+  valid.Y=train.Y[valid.Index]
+  
+  knn.model.valid=knn(train=train.X_train,test=valid.X,cl=train.Y_train,k=1,use.all=T)
+  
+  right=sum(as.numeric(as.character(valid.Y))==as.numeric(as.character(knn.model.valid)))
+  cv.ratio=c(cv.ratio,right/length(valid.Y))
+}
+
+print(cv.ratio)
+
+knn.model=knn(train=train.X,test=test.X,cl=train.Y,k=5)
 question$PredictDevice=as.numeric(as.character(knn.model))
 
-### Train the classifier
-rf.model=randomForest(x=train.X,y=train.Y,importance=T,ntree=5000)
-rf.Yhat=predict(rf.model,test.X)
-question$PredictDevice=as.numeric(as.character(rf.Yhat))
-
-
-## Run ANN
-formu_name="V1~V2"
-for(i in 3:21) formu_name=paste(formu_name,"+","V",i,sep="")
-formu=formula(formu_name)
-nn <- neuralnet(formu, data=trainFeature, hidden=2, err.fct="ce", linear.output=FALSE)
+# ### Train the classifier
+# rf.model=randomForest(x=train.X,y=train.Y,importance=T,ntree=500)
+# rf.Yhat=predict(rf.model,test.X)
+# question$PredictDevice=as.numeric(as.character(rf.Yhat))
+# 
+# 
+# ## Run ANN
+# formu_name="V1~V2"
+# for(i in 3:21) formu_name=paste(formu_name,"+","V",i,sep="")
+# formu=formula(formu_name)
+# nn <- neuralnet(formu, data=trainFeature, hidden=2, err.fct="ce", linear.output=FALSE)
 
 
 ###generate IS True
 question$IsTrue=ifelse(question$QuizDevice==question$PredictDevice,1,0)
-write.csv(question[,c(1,5)],file="answer-lda.csv",row.names=F)
+write.csv(question[,c(1,5)],file="answer-knn5.csv",row.names=F)
 
 
 
@@ -79,49 +106,103 @@ write.csv(question[,c(1,5)],file="answer-lda.csv",row.names=F)
 ##################################################
 require("kernlab")
 require(MASS)
-trainFeature=as.data.frame(trainFeature)
-trainFeature$V1=as.factor(trainFeature$V1)
+library(glmnet)
+library(gbm)
 
+classifierSet_gbm=list()
+parameterSet_gbm=list()
+classifierSet_svm=list()
+classifierSet_rf=list()
 
-testFeatures1=testFeature
-testFeatures1=as.data.frame(testFeatures1)
-testFeatures1$device=question$QuizDevice
-classifierSet=list()
+#trainFeature_08_index=sample(1:nrow(trainFeature),floor(0.8*nrow(trainFeature)))
+#trainFeature_02_index=c(1:nrow(trainFeature))[-trainFeature_08_index]
+  
+train=trainFeature[,c(1,featureIndex)]
 
 for(i in device){
-	train=trainFeature
   print(i)
-	train$V1=ifelse(trainFeature$V1==i,1,0)
+  train=trainFeature[,c(1,featureIndex)]
+  train$V1=ifelse(train$V1==i,1,0)
   
   index_1=which(train$V1==1)
   index_0=which(train$V1==0)
   
-  train.new=rbind(train[index_1,],train[sample(index_0,length(index_1)*2),])
+  train.new=rbind(train[index_1,],train[sample(index_0,length(index_1)),]) 
+  #6 is a tuning parameters 
+	train.new$V1=as.factor(train.new$V1)
 	
-  
   ### Different classifier ########
-  #classifierSet[[i]]=ksvm(V1~.,data=train.new,kernel="vanilladot")
-  classifierSet[[i]]=lda(V1~.,data=train.new)
-
+  classifierSet_svm[[i]]=ksvm(V1~.,data=train.new,kernel="rbfdot")
+  classifierSet_rf[[i]]=randomForest(V1~.,data=train.new,importance=F,ntree=500)
+  #classifierSet[[i]]=lda(V1~.,data=train.new)
+  #gbm.result=gbm(V1~.,data=train.new,n.trees=5000,shrinkage=0.005,bag.fraction=0.5,train.fraction=1,distribution="adaboost",cv.folds = 3)
+  #classifierSet_gbm[[i]]=gbm.result
+  #parameterSet_gbm[[i]]=gbm.perf(gbm.result,method="cv")
 }
 
-pre <- function(i){
-  print(i)
-	dev=testFeatures1[i,22]
-	seq=testFeatures1[i,2:21]
-	#model=svmResult[[dev]]
-  model=classifierSet[[dev]]
-	predresult=predict(model,seq)$class
+###################################
+#### SVM training Error
+###################################
+pred_svm_trainerror <- function(i){
+  dev=i
+  seqs=trainFeature[trainFeature$V1==i,featureIndex]
+  model=classifierSet_svm[[dev]]
+  predresult=predict(model,seqs)
   return(predresult)
 }
 
-result=sapply(1:nrow(testFeature),pre)
+trainerror_svm=lapply(device,pred_svm_trainerror)
 
-question$IsTrue=as.numeric(as.character(result))
+totalerror=c()
+for(error in trainerror_svm){
+  a=sum(error==0)
+  totalerror=c(totalerror,a)
+}
+
+print(1-sum(totalerror)/nrow(trainFeature)) ### =0.70973333
+##################################
+
+################## Do test set ######
+result_svm=list()
+pred_svm <- function(i){
+  print(i)
+	dev=i
+	seqs=testFeature[question$QuizDevice==i,featureIndex]
+	model=classifierSet_svm[[dev]]
+	predresult=predict(model,seqs)
+  return(predresult)
+}
 
 
+result_svm=lapply(device,pred_svm)
+
+question$IsTrue=-1
+
+for(i in 1:length(device)){
+  question[question$QuizDevice==device[i],"IsTrue"]=as.numeric(as.character(result_svm[[i]]))
+}
 
 #########Write the result 
-write.csv(question[,c(1,4)],file="answer-lda.csv",row.names=F)
+write.csv(question[,c("QuestionId","IsTrue")],file="answer2-rf.csv",row.names=F)
 
+
+
+
+
+
+########discard code ########
+
+result_gbm=list()
+pred_gbm <- function(i){
+  dev=i
+  seqs=testFeature[question$QuizDevice==i,featureIndex]
+  model=classifierSet_gbm[[dev]]
+  best.iter=parameterSet_gbm[[i]]
+  
+  Yhat=predict(model,seqs,best.iter)
+  Yhat=plogis(Yhat)  ### Convert to p value from logit value
+  Yhat=ifelse(Yhat>0.5,1,0)
+  return(Yhat)
+}
+result_gbm=lapply(device,pred_gbm)
 
