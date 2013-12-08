@@ -115,7 +115,7 @@ featureExtract <- function(trainDevice) {
   trainDevice$A=sqrt(trainDevice$X^2+trainDevice$Y^2+trainDevice$Z^2)
 	
 	# mean and variance of each component and the net value
-	xmean=mean(trainDevice$X)
+  xmean=mean(trainDevice$X)
   ymean=mean(trainDevice$Y)
   zmean=mean(trainDevice$Z)
   xvar=var(trainDevice$X)
@@ -125,15 +125,15 @@ featureExtract <- function(trainDevice) {
 	Avar=var(trainDevice$A)
 	
 	# correlation of each component
-	covmatrix=cov(trainDevice[,c("X","Y","Z")])
-	covxy=covmatrix[1,2]
-	covxz=covmatrix[1,3]
-	covyz=covmatrix[2,3]
+	#covmatrix=cov(trainDevice[,c("X","Y","Z")])
+	#covxy=covmatrix[1,2]
+	#covxz=covmatrix[1,3]
+	#covyz=covmatrix[2,3]
 	
-	#cormatrix=cor(trainDevice[,c("X","Y","Z")])
-	#corxy=cormatrix[1,2]
-	#corxz=cormatrix[1,3]
-	#coryz=cormatrix[2,3]
+	cormatrix=cor(trainDevice[,c("X","Y","Z")])
+	corxy=cormatrix[1,2]
+	corxz=cormatrix[1,3]
+	coryz=cormatrix[2,3]
 	
 	# fourier analysis
 	samplefre=mean(diff(trainDevice$T))
@@ -170,7 +170,7 @@ featureExtract <- function(trainDevice) {
 	
 		### to be determined
 	
-  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,covxy,covxz,covyz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
+  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,corxy,corxz,coryz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
   
   return(feature)
 }
@@ -282,9 +282,9 @@ dataFilter <- function(dataset){
 	
   newdata=timechange(newdata)
   
-  plt1=plotdevice(dataset)
-  plt2=plotdevice(newdata)
-  grid.arrange(plt1,plt2,ncol=2,main=as.character(newdata$Device[1]))
+  #plt1=plotdevice(dataset)
+  #plt2=plotdevice(newdata)
+  #grid.arrange(plt1,plt2,ncol=2,main=as.character(newdata$Device[1]))
   
 	return(newdata)
 }
@@ -297,7 +297,7 @@ createLabel <- function(traindata){
 
 
 
-createED <- function(traindata,range=400) {
+createED <- function(traindata,range=300) {
 	timedifference=diff(traindata$T)
 	breaktime=which(timedifference>2*60*1000) #if the difference time is larger than 2 mins, then divided into 2 parts
 	breaktime=breaktime
