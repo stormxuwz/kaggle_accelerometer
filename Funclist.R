@@ -170,7 +170,7 @@ featureExtract <- function(trainDevice) {
 	
 		### to be determined
 	
-  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,covxy,covxz,covyz,freX,freY,freZ,freA,energX,energY,energZ,energA,time)
+  feature=c(deviceNo,xmean,ymean,zmean,xvar,yvar,zvar,Amean,Avar,covxy,covxz,covyz,freX,freY,freZ,freA,energX,energY,energZ,energA,time,samplefre)
   
   return(feature)
 }
@@ -272,9 +272,12 @@ dataFilter <- function(dataset){
   
   newX=lint(dataset$X)
   newY=lint(dataset$Y)
-  newZ=lint(dataset$Z)
   
-  newdata=data.frame(T=newSamplePoint)
+	newZ=lint(dataset$Z)
+
+	
+	
+newdata=data.frame(T=newSamplePoint)
   newdata$X=newX
   newdata$Y=newY
   newdata$Z=newZ
