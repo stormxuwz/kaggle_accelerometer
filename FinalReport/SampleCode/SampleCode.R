@@ -6,7 +6,6 @@ library(randomForest)
 library(class)
 
 device=c(89)
-knn.k=5
 featureIndex=c(2:21)  # Features Selection
 
 
@@ -18,14 +17,13 @@ classifierSet_lda=list() # Lda
 classifierSet_lasso=list() # Lasso
 classifierSet_logit=list() # Logistic regression
 classifierSet_knn=list()
-rfErrorRate=list() # out of bag error in random forest
 
 
 ################################
 #### 0-1 Classifier training
 ###################################
 for(i in device){
-  load(paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
+  load(paste("trainDataForDevice_",i,".RData",sep=""))
   ### Different classifier ########
   train.new=train.new[,c(1,featureIndex)]
   classifierSet_svm[[i]]=ksvm(V1~.,data=train.new,kernel="rbfdot")
@@ -34,7 +32,6 @@ for(i in device){
   classifierSet_lda[[i]]=lda(V1~.,data=train.new)
   classifierSet_lasso[[i]]=cv.glmnet(as.matrix(train.new[,-1]),train.new[,1],family="binomial",alpha=1)
   classifierSet_logit[[i]]=glm(V1~.,data=train.new,family=binomial,maxit=200)
-  #classifierSet_knn[[i]]=train.new # The classifier of knn can be regared as its training set.
   rm(train.new)
 }
 
@@ -43,7 +40,7 @@ for(i in device){
 pred_trainerror <- function(i){
   print(i)
   dev=i
-  load(paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
+  load(paste("trainDataForDevice_",i,".RData",sep=""))
   seqs=train.new[,featureIndex]
   model=classifierSet[[dev]]
   
@@ -69,7 +66,7 @@ pred_trainerror <- function(i){
     predresult=ifelse(predresult>0.5,1,0)
   }
   else if(method=="rf"){
-    predresult=model$confusion
+    predresult=model$confusion  # To calculate OOB error
   }
   else{
     print("unknow method")
@@ -82,7 +79,7 @@ pred_trainerror <- function(i){
 pred_test <- function(i){
   print(i)
   dev=i
-  load(paste("./testFeature/testDataForDevice",i,".RData",sep=""))
+  load(paste("testDataForDevice",i,".RData",sep=""))
   seqs=test.new[,featureIndex]
   rm(test.new)
   model=classifierSet[[dev]]
@@ -129,17 +126,6 @@ trainerror <- function(trainerrordata){
   }
   return(mean(correctRatio))
 }
-
-
-### Summary of test error
-testerror <- function(result,filename){
-  question$IsTrue=-1
-  for(i in 1:length(device)){
-    question[question$QuizDevice==device[i],"IsTrue"]=as.numeric(as.character(result[[i]]))
-  }
-  write.csv(question[,c("QuestionId","IsTrue")],file=filename,row.names=F)
-}
-
 
 trainerrorSet=c(0,0,0,0,0,0,0)
 
@@ -200,14 +186,14 @@ for(i in 1:length(device)){
   dev=device[i]
   trainerr.knn=c()
   #train.knn=classifierSet_knn[[i]]
-  load(paste("./trainFeature/trainDataForDevice_",dev,".RData",sep=""))
+  load(paste("trainDataForDevice_",dev,".RData",sep=""))
   train.knn=train.new
   rm(train.new)
   train.knn.X=train.knn[,featureIndex]
   train.knn.Y=as.factor(train.knn[,1])
   knnCV=knn.cv(train.knn.X,train.knn.Y,k=5)
   trainerror_knn[[i]]=list(as.numeric(as.character(knnCV)),as.numeric(as.character(train.knn.Y)))
-  load(paste("./testFeature/testDataForDevice",dev,".RData",sep=""))
+  load(paste("testDataForDevice",dev,".RData",sep=""))
   seqs=test.new[,featureIndex]
   result_knn[[i]]=knn(train=train.knn.X,test=seqs,cl=train.knn.Y,k=5)
   rm(seqs)
