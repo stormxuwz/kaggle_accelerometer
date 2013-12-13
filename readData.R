@@ -3,10 +3,7 @@ source("/Users/XuWenzhao/Developer/kaggle_accelerometer/feature.R")
 
 setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/")
 
-#ffload("traindata.ff")
-#ffload("testdata.ff")
-#load("feature.RData")
-#load("basic.RData")
+
 #load("trainFeature.RData")
 #load("testFeature.RData")
 
@@ -67,16 +64,21 @@ save(seqs,file=paste("testfeatureForDevice",i,".RData",sep=""))
 #########    Extract the features
 ######################################
 
+ffload("traindata.ff")
+ffload("testdata.ff")
+#load("feature.RData")
+load("basic.RData")
+
 a=Sys.time()
 trainFeature=trainFeatureExtract(x,device)
 traintime=Sys.time()-a
-save(trainFeature,file="trainFeature_cov_300.RData")
+save(trainFeature,file="trainFeature_cov_400.RData")
 print(traintime)
 
 b=Sys.time()
 testFeature=testFeatureExtract(y)
 testtime=Sys.time()-b
-save(testFeature,file="testFeature2_cov_300.RData")
+save(testFeature,file="testFeature_cov_400.RData")
 print(testtime)
 
 

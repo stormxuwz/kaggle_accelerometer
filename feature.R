@@ -205,7 +205,7 @@ dataFilter <- function(dataset){
 ################################
 ###### Splitting the data set
 ################################
-createED <- function(traindata,range=300,min=2) {
+createED <- function(traindata,range=400,min=2) {
 	timedifference=diff(traindata$T)
 	#if the difference time is larger than (min) minutes, then divide the data into 2 parts
 	breaktime=which(timedifference>min*60*1000) 

@@ -1,5 +1,5 @@
 ###Prapare the data
-setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/")
+setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/0")
 
 ## Load data and do feature extraction
 # source("/Users/XuWenzhao/Developer/kaggle_accelerometer/readData.R")
@@ -7,12 +7,17 @@ setwd("/Users/XuWenzhao/Developer/DataSource/Kaggle/")
 #ffload("traindata.ff")
 #ffload("testdata.ff")
 load("basic.RData")
-load("trainFeature_cov_300_2.RData")
-load("testFeature2_cov_300_2.RData")
+load("trainFeatureMatrix.RData")
+load("testFeatureMatrix.RData")
 
 FeatureName=c("V1","xmean","ymean","zmean","xvar","yvar","zvar","Amean","Avar","covxy","covxz","covyz","freX","freY","freZ","freA","eneX","eneY","eneZ","eneA","hour","sampleFreq")
 rownames(trainFeature)=NULL
 rownames(testFeature)=NULL
+
+featureIndex=c(2:21) ### This is the feature index.
+negativeSize=1
+
+
 
 ######################################
 #########    Prepare the data
@@ -22,8 +27,22 @@ trainFeature=as.data.frame(trainFeature)
 trainFeature$V1=as.factor(trainFeature$V1)
 testFeature=as.data.frame(testFeature)
 
-featureIndex=c(2:21) ### This is the feature index.
-
+###### Sample to get 0-1 training data
+for(i in device){
+  print(i)
+  train=trainFeature
+  train$V1=ifelse(train$V1==i,1,0) # Assign label
+  
+  index_1=which(train$V1==1)
+  index_0=which(train$V1==0)
+  
+  train.new=rbind(train[index_1,],train[sample(index_0,length(index_1)*negativeSize),]) 
+  train.new$V1=as.factor(train.new$V1)
+  
+  test.new=testFeature[question$QuizDevice==i,]
+  save(train.new,file=paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
+  save(test.new,file=paste("./testFeature/testDataForDevice",i,".RData",sep=""))
+}
 
 #######################################################
 ## Run Multi-label Classifier
@@ -83,6 +102,7 @@ library(glmnet)
 library(gbm)
 library(randomForest)
 
+
 classifierSet_svm=list() # Gaussian kernel
 classifierSet_svm2=list() # Linear kernel
 classifierSet_rf=list() #Random Forest
@@ -90,52 +110,34 @@ classifierSet_lda=list() # Lda
 classifierSet_lasso=list() # Lasso
 classifierSet_logit=list() # Logistic regression
 classifierSet_knn=list() # knn
-rfErrorRate=list() # out of bag error in random forest
 
-#trainFeature_08_index=sample(1:nrow(trainFeature),floor(0.8*nrow(trainFeature)))
-#trainFeature_02_index=c(1:nrow(trainFeature))[-trainFeature_08_index]
 
-negativeSize=1
 
 for(i in device){
- 	print(i)
-  	train=trainFeature
-  	train$V1=ifelse(train$V1==i,1,0) # Assign label
-  
-  	index_1=which(train$V1==1)
-  	index_0=which(train$V1==0)
-  
-  	train.new=rbind(train[index_1,],train[sample(index_0,length(index_1)*negativeSize),]) 
-  	train.new$V1=as.factor(train.new$V1)
-	
-	test.new=testFeature[question$QuizDevice==i,]
-	save(train.new,file=paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
-	save(test.new,file=paste("./testFeature/testDataForDevice",i,".RData",sep=""))
-	
-  ### Different classifier ########
-  	train.new=train.new[,c(1,featureIndex)]
+ 	load(paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
+ 	train.new=train.new[,c(1,featureIndex)]
+ 	
+  	### Different classifier ########
   	classifierSet_svm[[i]]=ksvm(V1~.,data=train.new,kernel="rbfdot")
 	classifierSet_svm2[[i]]=ksvm(V1~.,data=train.new,kernel="vanilladot")
   	classifierSet_rf[[i]]=randomForest(V1~.,data=train.new,importance=F,ntree=500)
   	classifierSet_lda[[i]]=lda(V1~.,data=train.new)
 	classifierSet_lasso[[i]]=cv.glmnet(as.matrix(train.new[,-1]),train.new[,1],family="binomial",alpha=1)
   	classifierSet_logit[[i]]=glm(V1~.,data=train.new,family=binomial,maxit=200)
-	#classifierSet_knn[[i]]=train.new # The classifier of knn can be regared as its training set.
 	
 	rm(train.new)
 }
 
-save(classifierSet_svm,classifierSet_rf,classifierSet_lda,classifierSet_lasso,classifierSet_logit,file="classifier.RData")
+save(negativeSize,featureIndex,classifierSet_svm,classifierSet_svm2,classifierSet_rf,classifierSet_lda,classifierSet_lasso,classifierSet_logit,file="classifier.RData")
 
 ################################
 #### 0-1 Classifier Result
 ###################################
 pred_trainerror <- function(i){
   	print(i)
-	dev=i
   	load(paste("./trainFeature/trainDataForDevice_",i,".RData",sep=""))
   	seqs=train.new[,featureIndex]
-	model=classifierSet[[dev]]
+	  model=classifierSet[[i]]
 	
 	if(method=="svm"){
 		predresult=predict(model,seqs)
@@ -171,11 +173,10 @@ pred_trainerror <- function(i){
 
 pred_test <- function(i){
   print(i)
-	dev=i
 	load(paste("./testFeature/testDataForDevice",i,".RData",sep=""))
 	seqs=test.new[,featureIndex]
 	rm(test.new)
-	model=classifierSet[[dev]]
+	model=classifierSet[[i]]
 	
 	if(method=="rf" | method=="svm" ){	
 		predresult=predict(model,seqs)
@@ -245,7 +246,7 @@ classifierSet=classifierSet_svm2
 trainerror_svm2=lapply(device,pred_trainerror)
 trainerrorSet[2]=trainerror(trainerror_svm2)
 result_svm2=lapply(device,pred_test)
-testerror(result_svm,"svm2.csv")
+testerror(result_svm2,"svm2.csv")
 
 
 #Do random forest
@@ -304,7 +305,7 @@ for(i in 1:length(device)){
 
 trainerrorSet[7]=trainerror(trainerror_knn)
 testerror(result_knn,"knn.csv")
-
+save(trainerrorSet,file="trainError.RData")
 
 
 
@@ -346,17 +347,17 @@ testerror(result_knn,"knn.csv")
 #parameterSet_gbm[[i]]=gbm.perf(gbm.result,method="cv")
 
 
-
-pred2 <- function(i){ #for gbm and lasso
-  dev=i
-  seqs=testFeature[question$QuizDevice==i,featureIndex]
-  model=classifierSet[[dev]]
+# # 
+# pred2 <- function(i){ #for gbm and lasso
+  # dev=i
+  # seqs=testFeature[question$QuizDevice==i,featureIndex]
+  # model=classifierSet[[dev]]
   
-  if(class(model)[1]=="glm"){
-    predresult=predict(model,seqs,type = "response")
-  }else{
-    predresult=predict(model,as.matrix(seqs),type="response",s="lambda.min")
-  }
-  predresult=ifelse(predresult>0.5,1,0)
-  return(predresult)
-}
+  # if(class(model)[1]=="glm"){
+    # predresult=predict(model,seqs,type = "response")
+  # }else{
+    # predresult=predict(model,as.matrix(seqs),type="response",s="lambda.min")
+  # }
+  # predresult=ifelse(predresult>0.5,1,0)
+  # return(predresult)
+# }
