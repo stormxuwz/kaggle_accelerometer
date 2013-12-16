@@ -54,7 +54,7 @@
 		\subsection{Feature Extraction} % (fold)
 		\label{sub:feature_extraction}
 		
-		\paragraph{}First, the total acceralation value is calculated by $A=\sqrt{(a_x^2+a_y^2+a_z^2)}$ and added as a new time series. Based on literature research, 4 kind of features are extracted from the raw data. The first is mean and variance. The second is the correlation. The third is the frequency pattern and the last is the time. Totally, the number of features are 20, which is shown in Table 1. 
+		\paragraph{}First, the total acceralation value is calculated by $A=\sqrt{(a_x^2+a_y^2+a_z^2)}$ and added as a new time series. Based on literature research, 5 kind of features are extracted from the raw data. The first is mean and variance. The second is the correlation. The third is the frequency pattern and the last is the time. Totally, the number of features are 21, which is shown in Table 1. 
 		\begin{table}
 			\centering
 			\caption{Feature Selection}
@@ -64,6 +64,7 @@
 			2.Correlation (cor) (3 features) & the correlation coefficients between x and y, x and z, and y and z axis. & The users features when doing activities \\ \hline
 			3.Frequency Features (8 features) & The mean value of the first 5 dominate frequencies (frequencies with highest amplitude) and mean value of energy in these frequencies & Users walking features.\\ \hline
 			4.Time (1 feature) & mean time of day & User's habbit when doing such activity.
+			5.Sampling Frequency (1 feature) & The sampling frequencies of this device & Device feature
 			\end{tabular}
 		\end{table}
 
@@ -71,29 +72,17 @@
 	
 		\subsection{Classification} % (fold)
 		\label{sub:classifier}
-		\paragraph{} For simplicity, currently we just use KNN methods to detemine which device generate the test sequence. This is a multi-class classification problem, so other available methods include random forest, ANN and regression. 
-		
-		\paragraph{} However, if we treat the problem as a binary classification problem, common classifiers like SVM or Logistics Regression are applicable. The key challenge is how we automatic generate high quality training set from the given training data by self boosting. Then we train the model using the above training examples and apply SVM or Logistics Regression on test data.
+		\paragraph{} There are two ways to analyze this problem. The first is to treat the problems are a multilabel classification problem, i.e. determine which device the test sequencies are belong to 
 		% subsection classifier (end)
 	% section method (end)
 	
 	\section{Result} % (fold)
 	\label{sec:result}
-	\paragraph{} The data preparation and feature extraction took about 20 mins from training data and 34 mins for test data. For simplicity, KNN-1 is first used to predict the test sequences. The features are first scaled and we all the features except the time features. The result is uploaded to the kaggle website to see the result. We do some initial features selection and the result is shown in Table 2. Kind 1,2,3,4 represent the mean and variance features, correlation features, frequency features and time features, respectively.
-	\begin{table}
-		\centering
-		\caption{Prediction Result}
-		\begin{tabular}{c|c|c|c}
-			Feature Selection & Num of Features & Score & Rank \\ \hline
-			Kind 1,2 & 11 & 0.60682 & 491 \\
-			Kind 1,2,3 & 19 & 0.61843 & 481 \\ 
-			Kind 1,2,3,4 & 20 & 0.61869 & 481 \\
-		\end{tabular}
-	\end{table}
-	The best performance gets score as 0.61843 and rank as 481, which is better than the KNN benchmark. Full features perform slightly better which indicates the simple information of day of time have a little usefulness. In addition, frequency features and correlation features are very important in improving the performance.
+	\paragraph{} We have set different cases to study the effect of different parameters. The training error are calculated by cross-validation (in KNN method), out of bag error (in random forest) or error on training data (in other methods). And the prediction results are uploaded to kaggle website to see the prediction results. 
 	
-	\paragraph{} We have set the following cases to analysis the different parameters 
-	
+	\subsection{subsection name} % (fold)
+	\label{sub:subsection_name}
+
 	\begin{table}
 		\centering
 		\caption{Case Setting}
@@ -109,9 +98,20 @@
 	
 	\paragraph{}Case 0 is the baseline scenario. Case 1 reduces the features to the basic means and variances. Case 2 add sampling frequencies to the feature space. Case 3 increase the negative sampling size and Case 4 increase the average size of each data pieces.
 	
+	% subsection subsection_name (end)
+	\subsection{Prediction Result} % (fold)
+	\label{sub:prediction_result}
+	
+	\begin{itemize}
+		\item All methods except multilabel knn have good results in training data
+		\item Compare with Case 0 and Case 1, it seems FFT frequency features are not very important
+		\item Compare with Case 0 and Case 2, it seems sampling frequencies are not important too, although random forest do have a better results. 
+		\item Compare with Case 0 and Case 3, it 
+		\item Compare with Case 0 and Case 4, it seems with small splitting size have only marginal improvement. 
+	\end{itemize}
 	
 	
-	
+	% subsection prediction_result (end)
 	% section result (end)
 	\section{Conclusion} % (fold)
 	\label{sec:future_work}
