@@ -1,9 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 DEC 2013 00:59
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  16 DEC 2013 19:26
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**FinalReport.tex
+**FinalReport.tex -recorder
 (./FinalReport.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
@@ -292,7 +291,7 @@ Package caption Info: End \AtBeginDocument code.
 LaTeX Warning: File `split.png' not found on input line 32.
 
 
-./FinalReport.tex:32: Package pdftex.def Error: File `split.png' not found.
+! Package pdftex.def Error: File `split.png' not found.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -308,8 +307,7 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: File `resampling.png' not found on input line 33.
 
 
-./FinalReport.tex:33: Package pdftex.def Error: File `resampling.png' not found
-.
+! Package pdftex.def Error: File `resampling.png' not found.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -328,7 +326,7 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Warning: File `Rplot.pdf' not found on input line 49.
 
 
-./FinalReport.tex:49: Package pdftex.def Error: File `Rplot.pdf' not found.
+! Package pdftex.def Error: File `Rplot.pdf' not found.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
@@ -355,46 +353,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 65--65
 []\OT1/cmr/m/n/10 3.Frequency Fea-
  []
 
-[2] [3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 114--114
-[]\OT1/cmr/m/n/10 MultiLabel
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 114--114
-[]\OT1/cmr/m/n/10 MultiLabel
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 114--114
-[]\OT1/cmr/m/n/10 SVM (Lin-
- []
-
-
-Overfull \hbox (6.78908pt too wide) in paragraph at lines 114--114
-[]\OT1/cmr/m/n/10 RandomForest| 
- []
-
-
-Underfull \hbox (badness 1776) in paragraph at lines 114--114
-[]\OT1/cmr/m/n/10 Logistic Re-
- []
-
-./FinalReport.tex:114: Extra alignment tab has been changed to \cr.
-<recently read> \endtemplate 
-                             
-l.114 ...est & LDA & Lasso & Logistic Regression &
-                                                   0-1 KNN \\
-You have given more \span or & marks than there were
-in the preamble to the \halign or \valign now in progress.
-So I'll assume that you meant to type \cr instead.
-
-
-Overfull \hbox (186.52951pt too wide) in paragraph at lines 113--116
- [][] 
- []
-
-[5] (./FinalReport.aux) ) 
+[2] [3] [4] [5] (./FinalReport.aux) ) 
 Here is how much of TeX's memory you used:
  3780 strings out of 493315
  57103 string characters out of 6137904
@@ -402,20 +361,20 @@ Here is how much of TeX's memory you used:
  7197 multiletter control sequences out of 15000+600000
  9191 words of font info for 34 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 44i,11n,47p,849b,358s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmmi7.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr7.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt1
-0.pfb>
-Output written on FinalReport.pdf (5 pages, 134555 bytes).
+ 44i,11n,47p,859b,358s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmtt10.pfb>
+Output written on FinalReport.pdf (5 pages, 134062 bytes).
 PDF statistics:
  64 PDF objects out of 1000 (max. 8388607)
  45 compressed objects within 1 object stream
