@@ -1,4 +1,4 @@
-There are 5 folders, each represents a case.
+There are 5 folders, each represents a case. For the settings of each case, please see the report.
 
 answer-knn1, answer-knn2: Multi-label classification with k=1 and 5
 knn: 0-1 classification with k=5
