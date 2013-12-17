@@ -1,8 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  16 DEC 2013 21:16
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  17 DEC 2013 05:19
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**STAT542Project.tex -recorder
+**STAT542Project.tex
 (./STAT542Project.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
@@ -448,13 +449,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 48--49
 [1
 
 {/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<split.png, id=73, 814.04124pt x 685.56125pt>
+<split.png, id=77, 814.04124pt x 685.56125pt>
 File: split.png Graphic file (type png)
  <use split.png>
 Package pdftex.def Info: split.png used on input line 63.
 (pdftex.def)             Requested size: 281.85585pt x 237.36621pt.
 
-<resampling.png, id=75, 640.3925pt x 588.1975pt>
+<resampling.png, id=79, 640.3925pt x 588.1975pt>
 File: resampling.png Graphic file (type png)
  <use resampling.png>
 Package pdftex.def Info: resampling.png used on input line 64.
@@ -465,7 +466,7 @@ Missing character: There is no ô in font ptmr7t!
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ô in font ptmr7t!
- [2 <./split.png> <./resampling.png>] <Rplot.pdf, id=87, 1079.79913pt x 597.780
+ [2 <./split.png> <./resampling.png>] <Rplot.pdf, id=91, 1079.79913pt x 597.780
 79pt>
 File: Rplot.pdf Graphic file (type pdf)
 
@@ -507,6 +508,11 @@ Underfull \hbox (badness 1325) in paragraph at lines 127--127
  []
 
 
+Underfull \hbox (badness 2932) in paragraph at lines 128--128
+\OT1/ptm/m/n/10.95 fre-quency (1 fea-
+ []
+
+
 Underfull \hbox (badness 6125) in paragraph at lines 128--129
 []\OT1/ptm/m/n/10.95 Same mo-bile hard-ware
  []
@@ -516,25 +522,59 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--129
 \OT1/ptm/m/n/10.95 col-lects ac-cer-lerom-e-ter
  []
 
-[4] [5] [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 209.
+[4] [5]
+Overfull \hbox (14.89911pt too wide) in paragraph at lines 164--173
+ [][] 
+ []
+
+
+Overfull \hbox (14.89911pt too wide) in paragraph at lines 178--187
+ [][] 
+ []
+
+[6]
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ¶ in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ì in font ptmr7t!
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 224.
  [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 209.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 224.
  (./STAT542Project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 209.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 209.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 224.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 224.
 Package rerunfilecheck Info: File `STAT542Project.out' has not changed.
-(rerunfilecheck)             Checksum: DD94B58522E834C22B6D06A6006A680A;893.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 209.
+(rerunfilecheck)             Checksum: 63E40570FFF3DBBC5588AFAD574930D1;937.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 224.
  ) 
 Here is how much of TeX's memory you used:
- 7934 strings out of 493315
- 117761 string characters out of 6137904
- 226321 words of memory out of 5000000
- 11243 multiletter control sequences out of 15000+600000
- 40899 words of font info for 82 fonts, out of 8000000 for 9000
+ 7941 strings out of 493315
+ 117834 string characters out of 6137904
+ 222352 words of memory out of 5000000
+ 11245 multiletter control sequences out of 15000+600000
+ 41064 words of font info for 83 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 44i,12n,47p,1138b,405s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,12n,47p,1129b,405s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
@@ -542,10 +582,10 @@ ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2013/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/te
 xmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on STAT542Project.pdf (7 pages, 514827 bytes).
+Output written on STAT542Project.pdf (7 pages, 518524 bytes).
 PDF statistics:
- 305 PDF objects out of 1000 (max. 8388607)
- 249 compressed objects within 3 object streams
- 46 named destinations out of 1000 (max. 500000)
- 136 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 313 PDF objects out of 1000 (max. 8388607)
+ 257 compressed objects within 3 object streams
+ 50 named destinations out of 1000 (max. 500000)
+ 144 words of extra memory for PDF output out of 10000 (max. 10000000)
 

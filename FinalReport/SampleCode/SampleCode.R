@@ -191,7 +191,7 @@ for(i in 1:length(device)){
   rm(train.new)
   train.knn.X=train.knn[,featureIndex]
   train.knn.Y=as.factor(train.knn[,1])
-  knnCV=knn.cv(train.knn.X,train.knn.Y,k=5)
+  knnCV=knn.cv(train.knn.X,train.knn.Y,k=5) #leave one out CV
   trainerror_knn[[i]]=list(as.numeric(as.character(knnCV)),as.numeric(as.character(train.knn.Y)))
   load(paste("testDataForDevice",dev,".RData",sep=""))
   seqs=test.new[,featureIndex]
