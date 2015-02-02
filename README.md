@@ -3,6 +3,8 @@ kaggle_accelerometer
 
 STAT 542
 
+Problem description: https://www.kaggle.com/c/accelerometer-biometric-competition
+
 1. This is the final project for STAT 542 Course
 2. Only Code is uploaded
 1. The data was imported into R by ”ff” packages. Preprocessing procedures include: splitting,resampling and smoothing. 
